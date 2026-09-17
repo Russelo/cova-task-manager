@@ -1,6 +1,9 @@
 # --- Documents de travail locaux (non versionnés) ---
 docs/
 
+# --- Backend (Java / Spring Boot / Maven) ---
+backend/target/
+
 # --- Environnement / secrets ---
 .env
 .env.local
