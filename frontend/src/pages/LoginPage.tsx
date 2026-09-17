@@ -48,8 +48,8 @@ export default function LoginPage() {
         <p className="text-sm text-teal-200">© 2026 Cova</p>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center p-10">
-        <div className="flex w-90 flex-col gap-7">
+      <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-10">
+        <div className="flex w-full max-w-90 flex-col gap-7">
           <div className="flex flex-col gap-1.5">
             <h2 className="text-2xl font-bold text-neutral-900">Welcome back</h2>
             <p className="text-sm text-neutral-500">Log in to see your tasks.</p>
@@ -74,7 +74,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="h-11 rounded-[10px] border border-neutral-200 px-3.5 text-sm outline-cova-orange focus:outline-2"
+                className="h-11 w-full rounded-[10px] border border-neutral-200 px-3.5 text-sm outline-cova-orange focus:outline-2"
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -93,7 +93,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-1.5 h-11.5 rounded-[10px] bg-cova-orange text-sm font-semibold text-white disabled:opacity-60"
+              className="mt-1.5 h-11.5 w-full rounded-[10px] bg-cova-orange text-sm font-semibold text-white disabled:opacity-60"
             >
               {isSubmitting ? 'Logging in…' : 'Log in'}
             </button>
