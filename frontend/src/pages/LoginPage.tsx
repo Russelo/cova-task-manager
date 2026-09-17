@@ -1,5 +1,6 @@
 import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import PasswordInput from '../components/PasswordInput'
 import { useAuth } from '../context/AuthContext'
 
 export default function LoginPage() {
@@ -80,15 +81,13 @@ export default function LoginPage() {
               <label htmlFor="password" className="text-[13px] font-semibold text-neutral-900">
                 Password
               </label>
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 required
                 autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={setPassword}
                 placeholder="••••••••"
-                className="h-11 rounded-[10px] border border-neutral-200 px-3.5 text-sm outline-cova-orange focus:outline-2"
               />
             </div>
             <button

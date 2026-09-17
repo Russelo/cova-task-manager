@@ -1,5 +1,6 @@
 import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import PasswordInput from '../components/PasswordInput'
 import { useAuth } from '../context/AuthContext'
 
 export default function RegisterPage() {
@@ -121,16 +122,14 @@ export default function RegisterPage() {
                 <label htmlFor="password" className="text-[13px] font-semibold text-neutral-900">
                   Password
                 </label>
-                <input
+                <PasswordInput
                   id="password"
-                  type="password"
                   required
                   minLength={8}
                   autoComplete="new-password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={setPassword}
                   placeholder="min. 8 characters"
-                  className="h-11 rounded-[10px] border border-neutral-200 px-3.5 text-sm outline-cova-orange focus:outline-2"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1.5">
@@ -140,15 +139,13 @@ export default function RegisterPage() {
                 >
                   Confirm
                 </label>
-                <input
+                <PasswordInput
                   id="confirmPassword"
-                  type="password"
                   required
                   autoComplete="new-password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={setConfirmPassword}
                   placeholder="repeat it"
-                  className="h-11 rounded-[10px] border border-neutral-200 px-3.5 text-sm outline-cova-orange focus:outline-2"
                 />
               </div>
             </div>
