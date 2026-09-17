@@ -30,10 +30,15 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
+        if (!request.password().equals(request.confirmPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
+        }
         if (userRepository.existsByEmail(request.email())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
         }
         User user = new User();
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(user);
