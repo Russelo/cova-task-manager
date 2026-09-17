@@ -1,0 +1,18 @@
+# --- Documents de travail locaux (non versionnés) ---
+docs/
+
+# --- Environnement / secrets ---
+.env
+.env.local
+*.env
+!.env.example
+
+# --- IDE ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.iml
+
+# --- OS ---
+.DS_Store
+Thumbs.db
