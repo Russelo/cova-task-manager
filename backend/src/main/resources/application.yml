@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: task-manager
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:task_manager}
+    username: ${DB_USER:task_manager}
+    password: ${DB_PASSWORD:task_manager}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: ${JWT_SECRET:dev-only-secret-change-me-before-any-deployment}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
