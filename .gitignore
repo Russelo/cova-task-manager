@@ -4,6 +4,12 @@ docs/
 # --- Backend (Java / Spring Boot / Maven) ---
 backend/target/
 
+# --- Frontend (React / Vite / TypeScript) ---
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
 # --- Environnement / secrets ---
 .env
 .env.local
