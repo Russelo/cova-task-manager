@@ -9,4 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TaskRepository extends JpaRepository<Task, UUID> {
 
     Page<Task> findByUser(User user, Pageable pageable);
+
+    Page<Task> findByUserAndStatus(User user, TaskStatus status, Pageable pageable);
+
+    Page<Task> findByUserAndTitleContainingIgnoreCase(User user, String search, Pageable pageable);
+
+    Page<Task> findByUserAndStatusAndTitleContainingIgnoreCase(
+            User user, TaskStatus status, String search, Pageable pageable);
 }
