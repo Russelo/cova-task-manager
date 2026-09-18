@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
 import TaskCard from '../components/TaskCard'
 import TaskFormModal from '../components/TaskFormModal'
 import { useAuth } from '../context/AuthContext'
@@ -18,6 +19,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [modal, setModal] = useState<ModalState>({ open: false, task: null })
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null)
 
   const loadTasks = useCallback(async () => {
     setIsLoading(true)
@@ -50,7 +52,7 @@ export default function DashboardPage() {
   }
 
   function handleDelete(task: Task) {
-    console.log('delete', task)
+    setTaskToDelete(task)
   }
 
   function handleModalClose() {
@@ -59,6 +61,15 @@ export default function DashboardPage() {
 
   function handleModalSaved() {
     setModal({ open: false, task: null })
+    loadTasks()
+  }
+
+  function handleDeleteClose() {
+    setTaskToDelete(null)
+  }
+
+  function handleDeleted() {
+    setTaskToDelete(null)
     loadTasks()
   }
 
@@ -122,6 +133,14 @@ export default function DashboardPage() {
 
       {modal.open && (
         <TaskFormModal task={modal.task} onClose={handleModalClose} onSaved={handleModalSaved} />
+      )}
+
+      {taskToDelete && (
+        <ConfirmDeleteModal
+          task={taskToDelete}
+          onClose={handleDeleteClose}
+          onDeleted={handleDeleted}
+        />
       )}
     </div>
   )
