@@ -12,6 +12,8 @@ interface ModalState {
   task: Task | null
 }
 
+const PAGE_SIZE = 5
+
 export default function DashboardPage() {
   const { logout } = useAuth()
   const navigate = useNavigate()
@@ -27,7 +29,7 @@ export default function DashboardPage() {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await listTasks({ page })
+      const result = await listTasks({ page, size: PAGE_SIZE })
       if (result.content.length === 0 && page > 0) {
         setPage(page - 1)
         return
