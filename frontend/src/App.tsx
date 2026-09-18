@@ -1,15 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
+import DashboardPage from './pages/DashboardPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-
-function DashboardPlaceholder() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <p className="text-cova-teal font-semibold">Task dashboard coming soon.</p>
-    </div>
-  )
-}
 
 function App() {
   return (
@@ -20,7 +13,7 @@ function App() {
         path="/"
         element={
           <ProtectedRoute>
-            <DashboardPlaceholder />
+            <DashboardPage />
           </ProtectedRoute>
         }
       />
