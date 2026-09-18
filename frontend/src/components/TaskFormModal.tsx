@@ -73,6 +73,7 @@ export default function TaskFormModal({ task, onClose, onSaved }: TaskFormModalP
               id="title"
               type="text"
               required
+              autoFocus
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Write Q3 summary report"
