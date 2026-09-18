@@ -43,10 +43,20 @@ export default function TaskFormModal({ task, onClose, onSaved }: TaskFormModalP
 
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-neutral-900/40 p-4">
-      <div className="flex w-full max-w-100 flex-col gap-5 rounded-xl bg-white p-6">
-        <h2 className="text-lg font-bold text-neutral-900">
-          {task ? 'Edit task' : 'New task'}
-        </h2>
+      <div className="flex w-full max-w-160 flex-col gap-5 rounded-xl bg-white p-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-neutral-900">
+            {task ? 'Edit task' : 'New task'}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+          >
+            ✕
+          </button>
+        </div>
 
         {error && (
           <div className="rounded-lg border-l-4 border-red-600 bg-red-50 px-4 py-3 text-sm text-red-700">
