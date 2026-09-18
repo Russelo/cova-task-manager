@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -37,7 +39,7 @@ public class TaskController {
     @GetMapping
     public Page<TaskResponse> list(@RequestParam(required = false) TaskStatus status,
                                     @RequestParam(required = false) String search,
-                                    Pageable pageable,
+                                    @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                                     Authentication authentication) {
         return taskService.list(status, search, pageable, authentication);
     }
