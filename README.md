@@ -12,6 +12,7 @@ API REST Spring Boot et une interface web React.
 - [Installation et exécution](#installation-et-exécution)
 - [Tests](#tests)
 - [Fonctionnalités](#fonctionnalités)
+- [Captures d'écran](#captures-décran)
 - [Choix techniques notables](#choix-techniques-notables)
 - [CI/CD](#cicd)
 - [Déploiement](#déploiement)
@@ -126,6 +127,16 @@ données réelles.
   base mais n'apparaissent plus dans l'API)
 - Notifications toast (succès / erreur) et gestion des erreurs réseau
 - Menu utilisateur avec avatar (initiales) et déconnexion
+
+## Captures d'écran
+
+| Login | Register | Dashboard |
+| --- | --- | --- |
+| ![Login](screenshots/login.png) | ![Register](screenshots/register.png) | ![Dashboard](screenshots/dashboard.png) |
+
+Maquette web (avant implémentation) :
+
+![Maquette web](screenshots/mockup-web.png)
 
 ## Choix techniques notables
 
