@@ -1,3 +1,4 @@
+import { isAxiosError } from 'axios'
 import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PasswordInput from '../components/PasswordInput'
@@ -27,8 +28,12 @@ export default function RegisterPage() {
     try {
       await register({ firstName, lastName, email, password, confirmPassword })
       navigate('/')
-    } catch {
-      setError('Could not create your account. That email may already be in use.')
+    } catch (err) {
+      if (isAxiosError(err) && !err.response) {
+        setError('Cannot reach the server. Check that the backend is running.')
+      } else {
+        setError('Could not create your account. That email may already be in use.')
+      }
     } finally {
       setIsSubmitting(false)
     }

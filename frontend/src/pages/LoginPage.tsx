@@ -1,3 +1,4 @@
+import { isAxiosError } from 'axios'
 import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PasswordInput from '../components/PasswordInput'
@@ -18,8 +19,12 @@ export default function LoginPage() {
     try {
       await login(email, password)
       navigate('/')
-    } catch {
-      setError('Invalid email or password.')
+    } catch (err) {
+      if (isAxiosError(err) && !err.response) {
+        setError('Cannot reach the server. Check that the backend is running.')
+      } else {
+        setError('Invalid email or password.')
+      }
     } finally {
       setIsSubmitting(false)
     }
