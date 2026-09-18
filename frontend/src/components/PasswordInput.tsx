@@ -39,7 +39,7 @@ export default function PasswordInput({
         onClick={() => setVisible((current) => !current)}
         aria-label={visible ? 'Hide password' : 'Show password'}
         aria-pressed={visible}
-        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-neutral-400 hover:text-neutral-600"
+        className="absolute inset-y-0 right-0 flex w-11 cursor-pointer items-center justify-center text-neutral-400 hover:text-neutral-600"
       >
         {visible ? (
           <svg

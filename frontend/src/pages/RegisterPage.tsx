@@ -158,7 +158,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-1.5 h-11.5 w-full rounded-[10px] bg-cova-orange text-sm font-semibold text-white disabled:opacity-60"
+              className="mt-1.5 h-11.5 w-full cursor-pointer rounded-[10px] bg-cova-orange text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? 'Creating account…' : 'Create account'}
             </button>
