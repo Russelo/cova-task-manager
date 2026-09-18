@@ -1,8 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TaskCard from '../components/TaskCard'
+import TaskFormModal from '../components/TaskFormModal'
 import { useAuth } from '../context/AuthContext'
 import { listTasks, type Task, type TaskPage } from '../lib/tasks'
+
+interface ModalState {
+  open: boolean
+  task: Task | null
+}
 
 export default function DashboardPage() {
   const { logout } = useAuth()
@@ -11,46 +17,49 @@ export default function DashboardPage() {
   const [taskPage, setTaskPage] = useState<TaskPage | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [modal, setModal] = useState<ModalState>({ open: false, task: null })
 
-  useEffect(() => {
-    let cancelled = false
-
-    async function load() {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const page = await listTasks({})
-        if (!cancelled) {
-          setTaskPage(page)
-        }
-      } catch {
-        if (!cancelled) {
-          setError('Could not load your tasks. Please try again.')
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    load()
-    return () => {
-      cancelled = true
+  const loadTasks = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const page = await listTasks({})
+      setTaskPage(page)
+    } catch {
+      setError('Could not load your tasks. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }, [])
+
+  useEffect(() => {
+    loadTasks()
+  }, [loadTasks])
 
   async function handleLogout() {
     await logout()
     navigate('/login')
   }
 
+  function handleCreate() {
+    setModal({ open: true, task: null })
+  }
+
   function handleEdit(task: Task) {
-    console.log('edit', task)
+    setModal({ open: true, task })
   }
 
   function handleDelete(task: Task) {
     console.log('delete', task)
+  }
+
+  function handleModalClose() {
+    setModal({ open: false, task: null })
+  }
+
+  function handleModalSaved() {
+    setModal({ open: false, task: null })
+    loadTasks()
   }
 
   return (
@@ -83,6 +92,7 @@ export default function DashboardPage() {
           </div>
           <button
             type="button"
+            onClick={handleCreate}
             className="flex h-10.5 cursor-pointer items-center gap-2 rounded-[10px] bg-cova-orange px-5 text-sm font-semibold text-white"
           >
             <span className="text-base leading-none">+</span> New task
@@ -109,6 +119,10 @@ export default function DashboardPage() {
           </div>
         )}
       </main>
+
+      {modal.open && (
+        <TaskFormModal task={modal.task} onClose={handleModalClose} onSaved={handleModalSaved} />
+      )}
     </div>
   )
 }
