@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import axios from 'axios'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
 import Pagination from '../components/Pagination'
@@ -30,6 +31,7 @@ export default function DashboardPage() {
   const [status, setStatus] = useState<TaskStatus | undefined>(undefined)
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
+  const abortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     const timeout = setTimeout(() => setSearch(searchInput), 400)
@@ -41,22 +43,27 @@ export default function DashboardPage() {
   }, [status, search])
 
   const loadTasks = useCallback(async () => {
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
+
     setIsLoading(true)
     try {
-      const result = await listTasks({
-        page,
-        size: PAGE_SIZE,
-        status,
-        search: search || undefined,
-      })
+      const result = await listTasks(
+        { page, size: PAGE_SIZE, status, search: search || undefined },
+        controller.signal,
+      )
       if (result.content.length === 0 && page > 0) {
         setPage(page - 1)
         return
       }
       setTaskPage(result)
-    } catch {
+      setIsLoading(false)
+    } catch (err) {
+      if (axios.isCancel(err)) {
+        return
+      }
       showToast('error', 'Could not load your tasks', 'Please try again.')
-    } finally {
       setIsLoading(false)
     }
   }, [page, status, search, showToast])

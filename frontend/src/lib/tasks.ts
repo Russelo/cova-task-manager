@@ -32,8 +32,8 @@ export interface TaskInput {
   status: TaskStatus
 }
 
-export async function listTasks(params: TaskListParams): Promise<TaskPage> {
-  const { data } = await api.get<TaskPage>('/tasks', { params })
+export async function listTasks(params: TaskListParams, signal?: AbortSignal): Promise<TaskPage> {
+  const { data } = await api.get<TaskPage>('/tasks', { params, signal })
   return data
 }
 
