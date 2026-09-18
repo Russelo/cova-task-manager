@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
+import Pagination from '../components/Pagination'
 import TaskCard from '../components/TaskCard'
 import TaskFormModal from '../components/TaskFormModal'
 import { useAuth } from '../context/AuthContext'
@@ -16,6 +17,7 @@ export default function DashboardPage() {
   const navigate = useNavigate()
 
   const [taskPage, setTaskPage] = useState<TaskPage | null>(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [modal, setModal] = useState<ModalState>({ open: false, task: null })
@@ -25,14 +27,18 @@ export default function DashboardPage() {
     setIsLoading(true)
     setError(null)
     try {
-      const page = await listTasks({})
-      setTaskPage(page)
+      const result = await listTasks({ page })
+      if (result.content.length === 0 && page > 0) {
+        setPage(page - 1)
+        return
+      }
+      setTaskPage(result)
     } catch {
       setError('Could not load your tasks. Please try again.')
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [page])
 
   useEffect(() => {
     loadTasks()
@@ -60,8 +66,13 @@ export default function DashboardPage() {
   }
 
   function handleModalSaved() {
+    const wasCreate = modal.task === null
     setModal({ open: false, task: null })
-    loadTasks()
+    if (wasCreate && page !== 0) {
+      setPage(0)
+    } else {
+      loadTasks()
+    }
   }
 
   function handleDeleteClose() {
@@ -128,6 +139,15 @@ export default function DashboardPage() {
               <TaskCard key={task.id} task={task} onEdit={handleEdit} onDelete={handleDelete} />
             ))}
           </div>
+        )}
+
+        {taskPage && (
+          <Pagination
+            page={page}
+            totalPages={taskPage.totalPages}
+            onPrevious={() => setPage((current) => Math.max(0, current - 1))}
+            onNext={() => setPage((current) => current + 1)}
+          />
         )}
       </main>
 
