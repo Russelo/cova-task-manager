@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
 import Pagination from '../components/Pagination'
 import TaskCard from '../components/TaskCard'
+import TaskFilters from '../components/TaskFilters'
 import TaskFormModal from '../components/TaskFormModal'
 import { useAuth } from '../context/AuthContext'
-import { listTasks, type Task, type TaskPage } from '../lib/tasks'
+import { listTasks, type Task, type TaskPage, type TaskStatus } from '../lib/tasks'
 
 interface ModalState {
   open: boolean
@@ -24,12 +25,29 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null)
   const [modal, setModal] = useState<ModalState>({ open: false, task: null })
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null)
+  const [status, setStatus] = useState<TaskStatus | undefined>(undefined)
+  const [searchInput, setSearchInput] = useState('')
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setSearch(searchInput), 400)
+    return () => clearTimeout(timeout)
+  }, [searchInput])
+
+  useEffect(() => {
+    setPage(0)
+  }, [status, search])
 
   const loadTasks = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await listTasks({ page, size: PAGE_SIZE })
+      const result = await listTasks({
+        page,
+        size: PAGE_SIZE,
+        status,
+        search: search || undefined,
+      })
       if (result.content.length === 0 && page > 0) {
         setPage(page - 1)
         return
@@ -40,7 +58,7 @@ export default function DashboardPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [page])
+  }, [page, status, search])
 
   useEffect(() => {
     loadTasks()
@@ -123,6 +141,13 @@ export default function DashboardPage() {
           </button>
         </div>
 
+        <TaskFilters
+          search={searchInput}
+          onSearchChange={setSearchInput}
+          status={status}
+          onStatusChange={setStatus}
+        />
+
         {error && (
           <div className="rounded-lg border-l-4 border-red-600 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
@@ -132,7 +157,9 @@ export default function DashboardPage() {
         {isLoading && <p className="text-sm text-neutral-500">Loading tasks…</p>}
 
         {!isLoading && taskPage && taskPage.content.length === 0 && (
-          <p className="text-sm text-neutral-500">No tasks yet. Create your first one.</p>
+          <p className="text-sm text-neutral-500">
+            {status || search ? 'No tasks match your filters.' : 'No tasks yet. Create your first one.'}
+          </p>
         )}
 
         {!isLoading && taskPage && taskPage.content.length > 0 && (
