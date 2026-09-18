@@ -36,3 +36,13 @@ jobs:
       - run: npm ci
       - name: Type-check and build
         run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build backend image
+        run: docker build -t cova-backend:ci ./backend
+      - name: Build frontend image
+        run: docker build -t cova-frontend:ci ./frontend
