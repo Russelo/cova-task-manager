@@ -13,3 +13,7 @@ spring:
 jwt:
   secret: ${JWT_SECRET:dev-only-secret-change-me-before-any-deployment}
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
