@@ -7,7 +7,7 @@ const STATUS_LABEL: Record<Task['status'], string> = {
 }
 
 const STATUS_CLASSES: Record<Task['status'], string> = {
-  TODO: 'bg-neutral-100 text-neutral-500',
+  TODO: 'bg-red-100 text-red-700',
   IN_PROGRESS: 'bg-amber-100 text-amber-800',
   DONE: 'bg-green-100 text-green-800',
 }
